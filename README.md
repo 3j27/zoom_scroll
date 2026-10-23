@@ -65,7 +65,10 @@ consumed counts, the last modifiers/delta, current zoom, and last update reply.
 Control is modifier mask 4; Command/SUPER is 64.
 
 To rebuild a loaded plugin, unload it, run `make -B all check`, and reload
-the configuration. Unloading preserves current magnification. To disable it,
+the plugin explicitly with `hyprctl plugin load "$HOME/zoom_scroll/zoom-scroll.so"`.
+Hyprland caches its configured plugin list, so reloading an unchanged config
+after a manual unload does not load the library again. Unloading preserves
+current magnification. To disable it,
 remove the `dofile` line first, then unload and reset:
 
 ```sh
