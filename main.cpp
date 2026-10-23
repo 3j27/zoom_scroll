@@ -22,12 +22,12 @@ std::string setZoom(double value) {
 }
 
 void processAxis(const IPointer::SAxisEvent& event, Event::SCallbackInfo& info, uint32_t mods) {
-    // SUPER alone, matching the existing Command + mouse-wheel bindings.
-    constexpr uint32_t SUPER = 1U << 6;
+    // Control alone; other modifier combinations pass through.
+    constexpr uint32_t CONTROL = 1U << 2;
     if (info.cancelled || event.source != WL_POINTER_AXIS_SOURCE_FINGER ||
         event.axis != WL_POINTER_AXIS_VERTICAL_SCROLL || !g_pInputManager ||
         g_pInputManager->isLocked() || (PROTO::inputCapture && PROTO::inputCapture->isCaptured()) ||
-        mods != SUPER)
+        mods != CONTROL)
         return;
 
     // Consume even zero-delta stop events and scroll at the zoom limits.
@@ -71,7 +71,7 @@ std::string diagnostic(eHyprCtlOutputFormat, std::string request) {
         event.source = WL_POINTER_AXIS_SOURCE_FINGER;
         event.delta = -10;
         Event::SCallbackInfo info;
-        processAxis(event, info, 64);
+        processAxis(event, info, 4);
         const double after = *zoom;
         const double expected = ZoomScroll::nextZoom(2, -10, sensitivity->value(), maximum->value());
         const bool changedCorrectly = info.cancelled && std::abs(after - expected) < 0.00001;
@@ -79,15 +79,18 @@ std::string diagnostic(eHyprCtlOutputFormat, std::string request) {
         processAxis(event, info, 0);
         const bool ordinaryPasses = !info.cancelled && *zoom == after;
         info.cancelled = false;
-        event.source = WL_POINTER_AXIS_SOURCE_WHEEL;
         processAxis(event, info, 64);
+        const bool commandPasses = !info.cancelled && *zoom == after;
+        info.cancelled = false;
+        event.source = WL_POINTER_AXIS_SOURCE_WHEEL;
+        processAxis(event, info, 4);
         const bool wheelPasses = !info.cancelled && *zoom == after;
         const auto restored = setZoom(original);
-        return std::format("{}: synthetic finger scroll 2 -> {:.6f}, ordinary={}, wheel={}, restore={}",
-            changedCorrectly && ordinaryPasses && wheelPasses && restored == "ok" ? "PASS" : "FAIL",
-            after, ordinaryPasses, wheelPasses, restored);
+        return std::format("{}: synthetic finger scroll 2 -> {:.6f}, ordinary={}, command={}, wheel={}, restore={}",
+            changedCorrectly && ordinaryPasses && commandPasses && wheelPasses && restored == "ok" ? "PASS" : "FAIL",
+            after, ordinaryPasses, commandPasses, wheelPasses, restored);
     }
-    return std::format("events={} consumed={} last_mods={} last_delta={} zoom={} last_update_reply={}\nModifiers: Control=4, SUPER/Command=64. Self-test: hyprctl --batch 'zoomscroll selftest'",
+    return std::format("events={} consumed={} last_mods={} last_delta={} zoom={} last_update_reply={}\nZoom modifier: Control=4 (alone). SUPER/Command=64 passes through. Self-test: hyprctl --batch 'zoomscroll selftest'",
         events, consumed, lastMods, lastDelta, *zoom, lastReply);
 }
 }
@@ -113,7 +116,7 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     diagnosticCommand = HyprlandAPI::registerHyprCtlCommand(handle, {"zoomscroll", false, diagnostic});
     if (!diagnosticCommand)
         throw std::runtime_error("zoom-scroll: cannot register diagnostics");
-    return {"zoom-scroll", "Command + two-finger scroll accessibility zoom", "local", "0.1.1"};
+    return {"zoom-scroll", "Control + two-finger scroll accessibility zoom", "local", "0.1.2"};
 }
 
 APICALL EXPORT void PLUGIN_EXIT() {

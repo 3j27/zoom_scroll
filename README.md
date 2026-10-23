@@ -1,7 +1,7 @@
-# Command + two-finger scroll zoom
+# Control + two-finger scroll zoom
 
 A native Hyprland plugin for whole-screen magnification. Hold
-Command (SUPER) alone and scroll vertically with two fingers. Negative scroll
+Control alone and scroll vertically with two fingers. Negative scroll
 deltas zoom in; positive deltas zoom out. Natural scrolling may affect the
 physical direction. Ordinary scrolling, horizontal scrolling, mouse wheels,
 and other modifier combinations pass through. Locked sessions and active input
@@ -81,14 +81,14 @@ hyprctl eval 'hl.config({cursor = {zoom_factor = 1}})'
 Built on aarch64 against Hyprland 0.56.2-7 with GCC 16.1.1. The running
 compositor is v0.56.2, commit `efb50993780079460b0cbed1363e2166a2de1d9f`.
 The build and unit tests pass. The rebuilt plugin loads into the live
-compositor and its self-test passes: synthetic Command + finger scroll changes
+compositor and its self-test passes: synthetic Control + finger scroll changes
 zoom from 2 to 2.210342; ordinary and wheel scroll pass through; original zoom
 is restored. The Lua configuration is installed in this user's Hyprland config,
 and reloading reports no configuration errors.
 
 Physical gesture feel, modifier changes mid-gesture, and lock/input-capture
-behavior still require hands-on validation. Try ordinary scrolling, Command +
-scroll both ways, horizontal scrolling, limits, and releasing Command during a
+behavior still require hands-on validation. Try ordinary scrolling, Control +
+scroll both ways, horizontal scrolling, limits, and releasing Control during a
 scroll. Existing keyboard zoom/reset shortcuts remain available.
 
 See [investigation.md](investigation.md) for the original diagnosis: Hyprland
