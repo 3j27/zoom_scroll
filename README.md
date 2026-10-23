@@ -1,9 +1,10 @@
 # Control + two-finger scroll zoom
 
 A native Hyprland plugin for whole-screen magnification. Hold
-Control alone and scroll vertically with two fingers. Negative scroll
-deltas zoom in; positive deltas zoom out. Natural scrolling may affect the
-physical direction. Ordinary scrolling, horizontal scrolling, mouse wheels,
+Control alone and scroll vertically with two fingers. Zoom direction follows
+Hyprland's `input:touchpad:natural_scroll` setting, including live changes.
+With natural scrolling enabled, positive scroll deltas zoom in; otherwise,
+negative deltas zoom in. Ordinary scrolling, horizontal scrolling, mouse wheels,
 and other modifier combinations pass through. Locked sessions and active input
 capture are skipped.
 

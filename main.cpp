@@ -39,8 +39,10 @@ void processAxis(const IPointer::SAxisEvent& event, Event::SCallbackInfo& info, 
         return;
 
     static const CConfigValue<Config::FLOAT> zoom("cursor:zoom_factor");
+    static const CConfigValue<Config::BOOL> naturalScroll("input:touchpad:natural_scroll");
     const double current = *zoom;
-    const double next = ZoomScroll::nextZoom(current, event.delta, sensitivity->value(), maximum->value());
+    const double delta = *naturalScroll ? -event.delta : event.delta;
+    const double next = ZoomScroll::nextZoom(current, delta, sensitivity->value(), maximum->value());
     if (next != current) {
         lastReply = setZoom(next);
         // Do not swallow scrolling when the compositor rejects the update.
@@ -73,7 +75,8 @@ std::string diagnostic(eHyprCtlOutputFormat, std::string request) {
         Event::SCallbackInfo info;
         processAxis(event, info, 4);
         const double after = *zoom;
-        const double expected = ZoomScroll::nextZoom(2, -10, sensitivity->value(), maximum->value());
+        static const CConfigValue<Config::BOOL> naturalScroll("input:touchpad:natural_scroll");
+        const double expected = ZoomScroll::nextZoom(2, *naturalScroll ? 10 : -10, sensitivity->value(), maximum->value());
         const bool changedCorrectly = info.cancelled && std::abs(after - expected) < 0.00001;
         info.cancelled = false;
         processAxis(event, info, 0);
