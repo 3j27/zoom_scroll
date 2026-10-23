@@ -94,3 +94,21 @@ scroll. Existing keyboard zoom/reset shortcuts remain available.
 See [investigation.md](investigation.md) for the original diagnosis: Hyprland
 mouse-wheel bindings do not match finger-source axis events, and Lua does not
 expose the cancellable axis signal used by this plugin.
+
+## See also
+
+This plugin stays focused on Control + two-finger scrolling to control
+Hyprland's existing screen magnification while consuming the gesture. These
+related projects offer other approaches or broader accessibility features:
+
+- [Omarchy Magnifier](https://github.com/JPDoesDev/omarchy-magnifier): zoom
+  through keys, scroll wheel, or touchpad pinch, with a zoom popup, colour
+  inversion, and multi-monitor features.
+- [KDE Plasma accessibility zoom](https://docs.kde.org/stable_kf6/en/plasma-desktop/kcontrol/kcmaccess/):
+  modifier + two-finger scroll desktop magnification on Wayland, built into
+  a different desktop environment.
+- [hypr-canvas](https://github.com/aaronsb/hypr-canvas): a Hyprland plugin
+  offering Super + scroll zoom as part of an infinite desktop canvas.
+
+These are references and alternatives, not dependencies. Their compatibility
+with this system and support for this exact gesture have not been tested.
