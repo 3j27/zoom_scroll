@@ -1,0 +1,9 @@
+[repository]
+name = "zoom-scroll"
+authors = ["3j27"]
+
+[zoom-scroll]
+description = "Control + two-finger scroll accessibility zoom, following natural scrolling"
+authors = ["3j27"]
+output = "zoom-scroll.so"
+build = ["make all check"]

@@ -8,7 +8,37 @@ negative deltas zoom in. Ordinary scrolling, horizontal scrolling, mouse wheels,
 and other modifier combinations pass through. Locked sessions and active input
 capture are skipped.
 
-## Build
+## Install with hyprpm
+
+Requires Hyprland 0.56.2 (the tested version), `hyprpm`, a C++23 compiler,
+make, pkgconf, and libei development files. On Omarchy, install the manager
+with `omarchy pkg add hyprpm` if it is missing.
+
+```sh
+hyprpm add https://github.com/3j27/zoom_scroll
+hyprpm enable zoom-scroll
+hyprpm reload
+hyprctl plugin list
+hyprctl --batch 'zoomscroll selftest'
+```
+
+For startup loading on Omarchy, add to `~/.config/hypr/autostart.lua`:
+
+```lua
+o.launch_on_start("hyprpm reload")
+```
+
+Use `hyprpm update` after Hyprland upgrades, then `hyprpm reload`.
+New Hyprland versions may require source changes; compatibility beyond the
+tested version is not guaranteed. To disable, run `hyprpm disable zoom-scroll`
+and `hyprpm reload`. Remove the repository with `hyprpm remove zoom-scroll`.
+
+If migrating from the manual installation below, remove its `dofile(...)`
+line from `hyprland.lua` and unload the old library before enabling the
+hyprpm copy. Keep only one loading method to avoid handling gestures twice.
+Plugin settings can still be set with `hl.config(...)` after the plugin loads.
+
+## Build manually
 
 Requires a C++23 compiler, make, pkgconf, and the development files for the
 running Hyprland and libei. On this system those come with `gcc`, `make`,
