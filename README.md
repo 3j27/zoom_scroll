@@ -122,6 +122,17 @@ behavior still require hands-on validation. Try ordinary scrolling, Control +
 scroll both ways, horizontal scrolling, limits, and releasing Control during a
 scroll. Existing keyboard zoom/reset shortcuts remain available.
 
+### hyprpm validation (2026-10-23)
+
+On aarch64 with Hyprland and hyprpm 0.56.2-7, installed directly from the
+GitHub URL using `hyprpm add`, enabled with `hyprpm enable zoom-scroll`, and
+loaded with `hyprpm reload`. The manager built the library and ran the unit
+tests against its matching Hyprland headers. Verified the live compositor
+mapped `/var/cache/hyprpm/admin/zoom-scroll/zoom-scroll.so`, with one zoom-scroll
+instance loaded, and the synthetic scroll self-test passed with natural
+scrolling enabled (2 -> 1.809675 for delta -10). Configuration validation
+reported no errors. Physical gesture feel still requires hands-on checking.
+
 See [investigation.md](investigation.md) for the original diagnosis: Hyprland
 mouse-wheel bindings do not match finger-source axis events, and Lua does not
 expose the cancellable axis signal used by this plugin.
