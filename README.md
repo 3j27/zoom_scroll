@@ -1,5 +1,12 @@
 # Control + two-finger scroll zoom
 
+**Deprecated**: I have since switched to [https://github.com/3j27/hyprland-macos-zoom/tree/mine](https://github.com/3j27/hyprland-macos-zoom/tree/mine), which is based on [aastrand/hyprland-macos-zoom](https://github.com/3j27/hyprland-macos-zoom) adding [natural scrolling](https://github.com/aastrand/hyprland-macos-zoom/pull/2) support.
+
+This plugin was created independently without knowledge of hyprland-macos-zoom (didn't come up in my search), but duplicates mostly the same functionality.
+
+
+---
+
 A native Hyprland plugin for whole-screen magnification. Hold
 Control alone and scroll vertically with two fingers. Zoom direction follows
 Hyprland's `input:touchpad:natural_scroll` setting, including live changes.
