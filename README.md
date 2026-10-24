@@ -4,6 +4,27 @@
 
 This plugin was created independently without knowledge of hyprland-macos-zoom (didn't come up in my search), but duplicates mostly the same functionality.
 
+### Implementation comparison
+
+Both plugins listen to continuous Hyprland scroll events, calculate a zoom
+factor, use Hyprland's existing magnification, and consume the gesture. Neither
+launches a subprocess per scroll event. The comparison below describes
+`zoom_scroll` and the modified `hyprland-macos-zoom` fork with natural scrolling
+support.
+
+| Area | `zoom_scroll` | Modified `hyprland-macos-zoom` |
+|---|---|---|
+| Zoom curve | Exponential: each gesture changes zoom by a percentage | Linear: each gesture adds or subtracts a fixed amount |
+| Applying zoom | Calls Hyprland's configuration evaluator to update `cursor:zoom_factor` | Changes the monitor's zoom camera directly |
+| Devices | Two-finger touchpad scrolling only | Touchpad and mouse wheel |
+| Modifier | Control alone | Configurable modifier or combination |
+| Multiple monitors | Uses the global zoom configuration | Continuous scrolling targets the monitor under the pointer |
+| Natural scrolling | Follows the touchpad setting | Follows touchpad and mouse settings separately |
+| Controls | Scroll plus diagnostics and a synthetic input self-test | Scroll, zoom in/out, reset, toggle, and set a factor |
+| Zoom limits | 1×–8× by default | 1×–40× by default; snaps back to minimum near 1× |
+| Input guards | Explicitly skips locked sessions, active input capture, already-cancelled events, and nonfinite deltas | Scroll handler lacks those explicit checks |
+| Scroll stop events | Consumes matching zero-delta stop events | Returns early on zero-delta events |
+| Unloading | Preserves current magnification | Resets all monitors to 1× |
 
 ---
 
